@@ -5,9 +5,9 @@ services:
             context: docker
             dockerfile: dev/nginx/Dockerfile
         ports:
-            - "127.0.0.1:80:80"
+            - "127.0.0.1:8080:80"
         volumes:
-            - ./app:/app
+            - ./app/public:/app/public
         depends_on:
             - php-fpm
     php-fpm:
