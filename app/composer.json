@@ -2,7 +2,8 @@
 	"name": "badmansan/docker-simple-skeleton",
 	"description": "A simple skeleton for easy docker deployment",
 	"require": {
-		"php": ">=7.2"
+		"php": ">=7.2",
+		"doctrine/collections": "^1.6"
 	},
 	"require-dev": {
 		"roave/security-advisories": "dev-latest"
