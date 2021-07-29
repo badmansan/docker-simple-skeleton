@@ -1,7 +1,7 @@
 FROM php:7.2-cli
 
 RUN apt-get update -y \
-    && apt-get install unzip -y
+    && apt-get install unzip -y \
     && apt-get autoremove -y
 
 RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
