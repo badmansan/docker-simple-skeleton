@@ -23,6 +23,7 @@ build-prod:
 	docker --log-level=debug build --pull --file=docker/prod/nginx/Dockerfile --tag=${REGISTRY}/$(PROJECT_NAME)-nginx:${IMAGE_TAG} ./
 
 try-build:
+	-docker rmi localhost/$(PROJECT_NAME)-php-cli:0 localhost/$(PROJECT_NAME)-php-fpm:0 localhost/$(PROJECT_NAME)-nginx:0
 	REGISTRY=localhost IMAGE_TAG=0 make build-prod
 
 composer-install:
