@@ -27,5 +27,5 @@ Execute `make init` in console. You shouldn't see any errors.
 Try to go on `http://you-IP:you-port` in the browser. You should see a
 working website.
 
-In the future you can run composer from `php-cli` image:
-`docker-compose run --rm php-cli composer ...`.
+In the future you can run composer from `php-cli` image via
+`docker-compose run --rm php-cli composer ...` command.
