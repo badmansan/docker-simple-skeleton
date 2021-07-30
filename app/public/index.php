@@ -6,6 +6,12 @@ require __DIR__ . '/../vendor/autoload.php';
 
 // test autoload
 $collection = new ArrayCollection(range(10, 20));
-print_r($collection->toArray());
+echo '<pre>' . print_r($collection->toArray(), TRUE) . '</pre>';
+
+$pdo = new PDO('pgsql:host=db;port=5432;dbname=postgres', 'postgres', 'postgres');
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+$stmt = $pdo->query('SELECT NOW()');
+echo '<pre>' . print_r($stmt->fetchColumn(), TRUE) . '</pre>';
 
 phpinfo();

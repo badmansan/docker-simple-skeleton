@@ -39,3 +39,8 @@ working website.
 
 In the future you can run composer from `php-cli` image via
 `docker-compose run --rm php-cli composer ...` command.
+
+Go on `http://you-IP:you-adminer-port`. Select your db engine, enter 
+server name, user & password (default engine is PostgreSql, server `db`,
+user `postgres` & password `postgres`). See additional info in
+[docker hub](https://hub.docker.com) site.

@@ -1,8 +1,19 @@
 FROM php:7.2-cli
 
-RUN apt-get update -y \
-    && apt-get install unzip -y \
-    && apt-get autoremove -y
+RUN apt-get update -y
+
+# PHP intl extension
+RUN apt-get install -y libicu-dev && \
+    docker-php-ext-install intl
+
+# PHP PostgreSQL extension
+RUN apt-get install -y libpq-dev && \
+    docker-php-ext-install pdo_pgsql pgsql
+
+# unzip need by composer
+RUN apt-get install unzip -y
+
+RUN apt-get autoremove -y
 
 RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 

@@ -22,3 +22,23 @@ services:
             dockerfile: dev/php-cli/Dockerfile
         volumes:
             - ./app:/app
+    db:
+        image: postgres:13.3
+        environment:
+#            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+#            POSTGRES_DB: postgres
+        volumes:
+            - db:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+
+    adminer:
+        image: adminer
+        environment:
+            ADMINER_DEFAULT_SERVER: db # DB container name
+        ports:
+            - "8081:8080"
+
+volumes:
+    db:
