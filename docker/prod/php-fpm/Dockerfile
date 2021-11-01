@@ -15,7 +15,20 @@ RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader
 # build result container
 FROM php:7.2-fpm
 
+RUN apt-get update -y
+
+# PHP intl extension
+RUN apt-get install -y libicu-dev && \
+    docker-php-ext-install intl
+
+# PHP PostgreSQL extension
+RUN apt-get install -y libpq-dev && \
+    docker-php-ext-install pdo_pgsql pgsql
+
+# PHP opcache
 RUN docker-php-ext-install opcache
+
+RUN apt-get autoremove -y
 
 RUN mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 

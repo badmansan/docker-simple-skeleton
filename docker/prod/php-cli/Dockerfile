@@ -15,6 +15,18 @@ RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader
 # build result container
 FROM php:7.2-cli
 
+RUN apt-get update -y
+
+# PHP intl extension
+RUN apt-get install -y libicu-dev && \
+    docker-php-ext-install intl
+
+# PHP  PostgreSQL extension
+RUN apt-get install -y libpq-dev && \
+    docker-php-ext-install pdo_pgsql pgsql
+
+RUN apt-get autoremove -y
+
 RUN mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 
 COPY ./docker/common/php/conf.d /usr/local/etc/php/conf.d
