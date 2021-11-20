@@ -15,6 +15,7 @@ RUN apt-get install unzip -y
 
 RUN apt-get autoremove -y
 
+# PHP_INI_DIR is set inside php image
 RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 
 COPY ./common/php/conf.d /usr/local/etc/php/conf.d

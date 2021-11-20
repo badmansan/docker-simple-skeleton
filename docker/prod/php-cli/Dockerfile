@@ -27,6 +27,7 @@ RUN apt-get install -y libpq-dev && \
 
 RUN apt-get autoremove -y
 
+# PHP_INI_DIR is set inside php image
 RUN mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 
 COPY ./docker/common/php/conf.d /usr/local/etc/php/conf.d
