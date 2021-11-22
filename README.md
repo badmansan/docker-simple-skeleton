@@ -23,6 +23,7 @@ Don't forget to specify the minimum PHP version
 ```
 
 ### docker/dev/*/Dockerfile: nginx, php-cli, php-fpm
+### docker/prod/*/Dockerfile: nginx, php-cli, php-fpm
 
 Specify docker images. Feel free to use `-alpine` to reduce result images
 size: `nginx:1.19-alpine` etc.
