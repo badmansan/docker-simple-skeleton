@@ -1,5 +1,5 @@
 # make /vendor folder by composer
-FROM php:7.2-cli AS vendor-builder
+FROM php:7.4-cli AS vendor-builder
 
 RUN apt-get update -y && apt-get install unzip -y
 
@@ -36,4 +36,3 @@ WORKDIR /app
 
 COPY --from=vendor-builder ./app ./
 COPY ./app ./
-
