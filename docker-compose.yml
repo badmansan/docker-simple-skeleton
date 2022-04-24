@@ -34,11 +34,15 @@ services:
             - "5432:5432"
 
     adminer:
-        image: adminer
+        build:
+            context: docker
+            dockerfile: dev/adminer/Dockerfile
+#        restart: always
+        depends_on:
+            - db
         environment:
-            ADMINER_DEFAULT_SERVER: db # DB container name
-        ports:
-            - "8081:8080"
+            ADMINER_DEFAULT_SERVER: db
+            ADMINER_PLUGINS: "dump-date dump-zip enum-option enum-types"
 
 volumes:
     db:
