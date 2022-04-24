@@ -4,6 +4,8 @@ up: docker-up
 down: docker-down
 restart: down up
 init: docker-down docker-pull docker-build docker-up composer-install
+build: down docker-build
+force-rebuild: down docker-rebuild
 
 docker-up:
 	docker-compose up -d
@@ -16,6 +18,9 @@ docker-pull:
 
 docker-build:
 	docker-compose build
+
+docker-rebuild:
+	docker-compose build --no-cache
 
 build-prod:
 	docker --log-level=debug build --pull --file=docker/prod/php-cli/Dockerfile --tag=${REGISTRY}/$(PROJECT_NAME)-php-cli:${IMAGE_TAG} ./
