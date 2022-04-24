@@ -1,0 +1,10 @@
+services:
+    nginx:
+        ports:
+            - "888:80"
+    db:
+        ports:
+            - "6753:5432"
+    adminer:
+        ports:
+            - "8811:8080"

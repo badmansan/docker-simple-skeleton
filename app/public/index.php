@@ -8,6 +8,7 @@ require __DIR__ . '/../vendor/autoload.php';
 $collection = new ArrayCollection(range(10, 20));
 echo '<pre>' . print_r($collection->toArray(), TRUE) . '</pre>';
 
+// test db
 $pdo = new PDO('pgsql:host=db;port=5432;dbname=postgres', 'postgres', 'postgres');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

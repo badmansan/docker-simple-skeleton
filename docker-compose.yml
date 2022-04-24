@@ -4,8 +4,6 @@ services:
         build:
             context: docker
             dockerfile: dev/nginx/Dockerfile
-        ports:
-            - "127.0.0.1:8080:80"
         volumes:
             - ./app/public:/app/public
         depends_on:
@@ -23,16 +21,13 @@ services:
         volumes:
             - ./app:/app
     db:
-        image: postgres:14
+        image: postgres:13
         environment:
-#            POSTGRES_USER: postgres
+            POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
 #            POSTGRES_DB: postgres
         volumes:
             - db:/var/lib/postgresql/data
-        ports:
-            - "5432:5432"
-
     adminer:
         build:
             context: docker
