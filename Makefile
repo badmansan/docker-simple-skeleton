@@ -3,9 +3,9 @@ PROJECT_NAME=test
 up: docker-up
 down: docker-down
 restart: down up
-init: docker-down docker-pull docker-build docker-up composer-install
+init: docker-down-clear docker-pull docker-build up composer-install
 build: down docker-build
-force-rebuild: down docker-rebuild
+force-rebuild: down docker-force-rebuild up
 
 docker-up:
 	docker-compose up -d
@@ -13,14 +13,17 @@ docker-up:
 docker-down:
 	docker-compose down --remove-orphans
 
+docker-down-clear:
+	docker-compose down -v --remove-orphans
+
 docker-pull:
 	docker-compose pull
 
 docker-build:
 	docker-compose build
 
-docker-rebuild:
-	docker-compose build --no-cache
+docker-force-rebuild:
+	docker-compose build --no-cache --pull
 
 build-prod:
 	docker --log-level=debug build --pull --file=docker/prod/php-cli/Dockerfile --tag=${REGISTRY}/$(PROJECT_NAME)-php-cli:${IMAGE_TAG} ./
