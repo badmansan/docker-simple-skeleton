@@ -10,6 +10,9 @@ RUN apt-get install -y libicu-dev && \
 RUN apt-get install -y libpq-dev && \
     docker-php-ext-install pdo_pgsql pgsql
 
+# xdebug
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+
 # unzip need by composer
 RUN apt-get install unzip -y
 
