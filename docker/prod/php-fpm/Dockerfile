@@ -13,7 +13,7 @@ COPY ./app/composer.json ./app/composer.lock ./
 RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader
 
 # build result container
-FROM php:7.2-fpm
+FROM php:7.4-fpm
 
 RUN apt-get update -y
 
