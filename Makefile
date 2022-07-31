@@ -1,4 +1,5 @@
-PROJECT_NAME=test
+PROJECT_NAME = test
+IMAGE_VERSION = `date +%F_%H%M`
 
 up: docker-up
 down: docker-down
@@ -26,9 +27,9 @@ docker-force-rebuild:
 	docker compose build --no-cache --pull
 
 build-prod:
-	docker --log-level=debug build --pull --file=docker/prod/php-cli/Dockerfile --tag=${REGISTRY}/$(PROJECT_NAME)-php-cli:${IMAGE_TAG} ./
-	docker --log-level=debug build --pull --file=docker/prod/php-fpm/Dockerfile --tag=${REGISTRY}/$(PROJECT_NAME)-php-fpm:${IMAGE_TAG} ./
-	docker --log-level=debug build --pull --file=docker/prod/nginx/Dockerfile --tag=${REGISTRY}/$(PROJECT_NAME)-nginx:${IMAGE_TAG} ./
+	docker --log-level=debug build --pull --file=docker/prod/php-cli/Dockerfile --tag=$(REGISTRY)/$(PROJECT_NAME)-php-cli:$(IMAGE_VERSION) ./
+	docker --log-level=debug build --pull --file=docker/prod/php-fpm/Dockerfile --tag=$(REGISTRY)/$(PROJECT_NAME)-php-fpm:$(IMAGE_VERSION) ./
+	docker --log-level=debug build --pull --file=docker/prod/nginx/Dockerfile --tag=$(REGISTRY)/$(PROJECT_NAME)-nginx:$(IMAGE_VERSION) ./
 
 try-build:
 	-docker rmi localhost/$(PROJECT_NAME)-php-cli:0 localhost/$(PROJECT_NAME)-php-fpm:0 localhost/$(PROJECT_NAME)-nginx:0
