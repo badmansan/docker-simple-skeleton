@@ -18,7 +18,7 @@ RUN apt-get autoremove -y
 # PHP_INI_DIR is set inside php image
 RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 
-COPY ./common/php/conf.d /usr/local/etc/php/conf.d
+COPY ./common/php/conf.d $PHP_INI_DIR/conf.d
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet

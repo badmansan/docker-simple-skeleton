@@ -2,7 +2,7 @@ FROM adminer:latest
 
 USER root
 RUN apk add mc
-COPY ./dev/adminer/php.ini /usr/local/etc/php/conf.d/999-owerrided-php-settings.ini
+COPY ./dev/adminer/php.ini $PHP_INI_DIR/conf.d/999-owerrided-php-settings.ini
 
 USER adminer
 WORKDIR /var/www/html
