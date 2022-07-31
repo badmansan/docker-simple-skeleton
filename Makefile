@@ -1,5 +1,9 @@
-PROJECT_NAME = test
-IMAGE_VERSION = `date +%F_%H%M`
+include .env
+export $(shell sed 's/=.*//' .env)
+
+GIT_BRANCH = `git branch --no-color --show-current`
+GIT_TAG = `git describe --tags`
+IMAGE_VERSION = ${GIT_BRANCH}-${GIT_TAG}
 
 up: docker-up
 down: docker-down
@@ -7,6 +11,9 @@ restart: down up
 init: docker-down-clear docker-pull docker-build up composer-install
 build: down docker-build
 force-rebuild: down docker-force-rebuild up
+
+current-image-version:
+	echo ${IMAGE_VERSION}
 
 docker-up:
 	docker compose up -d
@@ -27,13 +34,17 @@ docker-force-rebuild:
 	docker compose build --no-cache --pull
 
 build-prod:
-	docker --log-level=debug build --pull --file=docker/prod/php-cli/Dockerfile --tag=$(REGISTRY)/$(PROJECT_NAME)-php-cli:$(IMAGE_VERSION) ./
-	docker --log-level=debug build --pull --file=docker/prod/php-fpm/Dockerfile --tag=$(REGISTRY)/$(PROJECT_NAME)-php-fpm:$(IMAGE_VERSION) ./
-	docker --log-level=debug build --pull --file=docker/prod/nginx/Dockerfile --tag=$(REGISTRY)/$(PROJECT_NAME)-nginx:$(IMAGE_VERSION) ./
+	docker build --no-cache --pull --file=docker/prod/php-cli/Dockerfile --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-cli-${IMAGE_VERSION} ./
+	docker build --no-cache --pull --file=docker/prod/php-fpm/Dockerfile --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-fpm-${IMAGE_VERSION} ./
+	docker build --no-cache --pull --file=docker/prod/nginx/Dockerfile --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:nginx-${IMAGE_VERSION} ./
 
-try-build:
-	-docker rmi localhost/$(PROJECT_NAME)-php-cli:0 localhost/$(PROJECT_NAME)-php-fpm:0 localhost/$(PROJECT_NAME)-nginx:0
-	REGISTRY=localhost IMAGE_TAG=0 make build-prod
+registry-push:
+	docker push ${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-cli-${IMAGE_VERSION}
+	docker push ${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-fpm-${IMAGE_VERSION}
+	docker push ${REGISTRY}/${COMPOSE_PROJECT_NAME}:nginx-${IMAGE_VERSION}
+	docker image rm ${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-cli-${IMAGE_VERSION}
+	docker image rm ${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-fpm-${IMAGE_VERSION}
+	docker image rm ${REGISTRY}/${COMPOSE_PROJECT_NAME}:nginx-${IMAGE_VERSION}
 
 composer-install:
 	docker compose run --rm php-cli composer install

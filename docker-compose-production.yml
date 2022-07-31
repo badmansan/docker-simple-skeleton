@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+    nginx:
+        image: ${REGISTRY}/${COMPOSE_PROJECT_NAME}:nginx-${IMAGE_VERSION}
+        restart: always
+        depends_on:
+            - php-fpm
+    php-fpm:
+        image: ${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-fpm-${IMAGE_VERSION}
+        restart: always
+    php-cli:
+        image: ${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-cli-${IMAGE_VERSION}
+    db:
+        image: postgres:13
+        restart: always
+        volumes:
+            - db:/var/lib/postgresql/data
+
+volumes:
+    db:
