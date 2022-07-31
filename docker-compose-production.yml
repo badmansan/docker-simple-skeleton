@@ -3,6 +3,8 @@ services:
     nginx:
         image: ${REGISTRY}/${COMPOSE_PROJECT_NAME}:nginx-${IMAGE_VERSION}
         restart: always
+        ports:
+            - "80:80"
         depends_on:
             - php-fpm
     php-fpm:
@@ -13,6 +15,8 @@ services:
     db:
         image: postgres:13
         restart: always
+        environment:
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         volumes:
             - db:/var/lib/postgresql/data
 
