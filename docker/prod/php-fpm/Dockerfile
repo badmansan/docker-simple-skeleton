@@ -1,5 +1,5 @@
 # make /vendor folder by composer
-FROM php:7.4-cli AS vendor-builder
+FROM php:8.1-cli AS vendor-builder
 
 RUN apt-get update -y && apt-get install unzip -y
 
@@ -13,7 +13,7 @@ COPY ./app/composer.json ./app/composer.lock ./
 RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader
 
 # build result container
-FROM php:7.4-fpm
+FROM php:8.1-fpm
 
 RUN apt-get update -y
 
