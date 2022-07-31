@@ -8,22 +8,22 @@ build: down docker-build
 force-rebuild: down docker-force-rebuild up
 
 docker-up:
-	docker-compose up -d
+	docker compose up -d
 
 docker-down:
-	docker-compose down --remove-orphans
+	docker compose down --remove-orphans
 
 docker-down-clear:
-	docker-compose down -v --remove-orphans
+	docker compose down -v --remove-orphans
 
 docker-pull:
-	docker-compose pull
+	docker compose pull
 
 docker-build:
-	docker-compose build
+	docker compose build
 
 docker-force-rebuild:
-	docker-compose build --no-cache --pull
+	docker compose build --no-cache --pull
 
 build-prod:
 	docker --log-level=debug build --pull --file=docker/prod/php-cli/Dockerfile --tag=${REGISTRY}/$(PROJECT_NAME)-php-cli:${IMAGE_TAG} ./
@@ -35,4 +35,4 @@ try-build:
 	REGISTRY=localhost IMAGE_TAG=0 make build-prod
 
 composer-install:
-	docker-compose run --rm php-cli composer install
+	docker compose run --rm php-cli composer install
