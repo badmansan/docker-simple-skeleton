@@ -22,10 +22,6 @@ services:
             - ./app:/app
     db:
         image: postgres:13
-        environment:
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
-#            POSTGRES_DB: postgres
         volumes:
             - db:/var/lib/postgresql/data
     adminer:

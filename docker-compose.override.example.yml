@@ -3,6 +3,10 @@ services:
         ports:
             - "888:80"
     db:
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            #POSTGRES_DB: postgres
         ports:
             - "6753:5432"
     adminer:
