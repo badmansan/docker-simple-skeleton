@@ -11,6 +11,7 @@ restart: down up
 init: docker-down-clear docker-pull docker-build up composer-install
 build: down docker-build
 force-rebuild: down docker-force-rebuild up
+production-update: production-build production-registry-push production-deploy
 
 current-image-version:
 	echo ${IMAGE_VERSION}
