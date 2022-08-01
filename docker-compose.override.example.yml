@@ -2,18 +2,6 @@ services:
     nginx:
         ports:
             - "888:80"
-    db:
-        environment:
-            # see https://hub.docker.com/_/postgres
-            #POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
-            #POSTGRES_DB: postgres
-
-            DB_USER: app_db_user
-            DB_PASSWORD: 123456
-            DB_NAME: app_db
-        ports:
-            - "6753:5432"
     adminer:
         ports:
             - "8811:8080"
