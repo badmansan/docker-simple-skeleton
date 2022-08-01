@@ -23,7 +23,7 @@ services:
             - ./app:/app
             - ./docker/dev/php-cli/xdebug-cli.ini:/usr/local/etc/php/conf.d/xdebug-cli.ini
     db:
-        image: postgres:13
+        image: postgres:13-alpine
         volumes:
             - ./docker/common/postgres/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
             - db:/var/lib/postgresql/data
