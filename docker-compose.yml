@@ -25,6 +25,7 @@ services:
     db:
         image: postgres:13
         volumes:
+            - ./docker/common/postgres/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
             - db:/var/lib/postgresql/data
     adminer:
         build:
