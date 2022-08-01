@@ -13,6 +13,8 @@ RUN apt-get install -y libpq-dev && \
 # xdebug
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
+RUN apt-get autoremove -y
+
 # PHP_INI_DIR is set inside php image
 RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 
