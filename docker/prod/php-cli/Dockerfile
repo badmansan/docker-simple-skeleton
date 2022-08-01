@@ -19,7 +19,8 @@ RUN apt-get update -y
 
 # PHP intl extension
 RUN apt-get install -y libicu-dev && \
-    docker-php-ext-install intl
+    docker-php-ext-install intl \
+    docker-php-ext-configure intl
 
 # PHP PostgreSQL extension
 RUN apt-get install -y libpq-dev && \
