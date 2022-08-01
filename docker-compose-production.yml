@@ -13,7 +13,7 @@ services:
     php-cli:
         image: ${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-cli-${IMAGE_VERSION}
     db:
-        image: postgres:13-alpine
+        image: ${REGISTRY}/${COMPOSE_PROJECT_NAME}:postgres-${IMAGE_VERSION}
         restart: always
         environment:
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

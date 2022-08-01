@@ -38,24 +38,25 @@ production-build:
 	docker build --no-cache --pull --file=docker/prod/php-cli/Dockerfile --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-cli-${IMAGE_VERSION} ./
 	docker build --no-cache --pull --file=docker/prod/php-fpm/Dockerfile --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-fpm-${IMAGE_VERSION} ./
 	docker build --no-cache --pull --file=docker/prod/nginx/Dockerfile --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:nginx-${IMAGE_VERSION} ./
+	docker build --no-cache --pull --file=docker/prod/postgres/Dockerfile --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:postgres-${IMAGE_VERSION} ./
 
 production-registry-push:
 	docker push ${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-cli-${IMAGE_VERSION}
 	docker push ${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-fpm-${IMAGE_VERSION}
 	docker push ${REGISTRY}/${COMPOSE_PROJECT_NAME}:nginx-${IMAGE_VERSION}
+	docker push ${REGISTRY}/${COMPOSE_PROJECT_NAME}:postgres-${IMAGE_VERSION}
 	docker image rm ${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-cli-${IMAGE_VERSION}
 	docker image rm ${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-fpm-${IMAGE_VERSION}
 	docker image rm ${REGISTRY}/${COMPOSE_PROJECT_NAME}:nginx-${IMAGE_VERSION}
+	docker image rm ${REGISTRY}/${COMPOSE_PROJECT_NAME}:postgres-${IMAGE_VERSION}
 
 production-deploy:
 	ssh ${HOST} 'rm -rf ${COMPOSE_PROJECT_NAME}-${IMAGE_VERSION}'
 	ssh ${HOST} 'mkdir ${COMPOSE_PROJECT_NAME}-${IMAGE_VERSION}'
 	scp docker-compose-production.yml ${HOST}:${COMPOSE_PROJECT_NAME}-${IMAGE_VERSION}/docker-compose.yml
 	scp docker/prod/bash/remove-docker-images.sh ${HOST}:${COMPOSE_PROJECT_NAME}-${IMAGE_VERSION}
-	ssh ${HOST} 'cd ${COMPOSE_PROJECT_NAME}-${IMAGE_VERSION} && echo "COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}" >> .env'
-	ssh ${HOST} 'cd ${COMPOSE_PROJECT_NAME}-${IMAGE_VERSION} && echo "REGISTRY=${REGISTRY}" >> .env'
-	ssh ${HOST} 'cd ${COMPOSE_PROJECT_NAME}-${IMAGE_VERSION} && echo "IMAGE_VERSION=${IMAGE_VERSION}" >> .env'
-	ssh ${HOST} 'cd ${COMPOSE_PROJECT_NAME}-${IMAGE_VERSION} && echo "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" >> .env'
+	scp .env.production ${HOST}:${COMPOSE_PROJECT_NAME}-${IMAGE_VERSION}/.env
+	ssh ${HOST} 'cd ${COMPOSE_PROJECT_NAME}-${IMAGE_VERSION} && printf "\nIMAGE_VERSION=${IMAGE_VERSION}\n" >> .env'
 	ssh ${HOST} 'cd ${COMPOSE_PROJECT_NAME}-${IMAGE_VERSION} && docker compose pull'
 	ssh ${HOST} 'cd ${COMPOSE_PROJECT_NAME}-${IMAGE_VERSION} && docker compose up --build --remove-orphans -d'
 	ssh ${HOST} 'rm -f ${COMPOSE_PROJECT_NAME}-latest'
