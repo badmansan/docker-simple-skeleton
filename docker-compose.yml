@@ -12,6 +12,8 @@ services:
         build:
             context: docker
             dockerfile: dev/php-fpm/Dockerfile-alpine
+        environment:
+            PHP_IDE_CONFIG: "serverName=Docker"
         volumes:
             - ./app:/app
             - ./docker/dev/php-fpm/xdebug-fpm.ini:/usr/local/etc/php/conf.d/xdebug-fpm.ini
@@ -19,6 +21,8 @@ services:
         build:
             context: docker
             dockerfile: dev/php-cli/Dockerfile-alpine
+        environment:
+            PHP_IDE_CONFIG: "serverName=Docker"
         volumes:
             - ./app:/app
             - ./docker/dev/php-cli/xdebug-cli.ini:/usr/local/etc/php/conf.d/xdebug-cli.ini
