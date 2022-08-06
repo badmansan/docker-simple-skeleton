@@ -10,16 +10,18 @@ WORKDIR /app
 
 COPY ./app/composer.json ./app/composer.lock ./
 
-RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader
+RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader --ignore-platform-reqs
 
 # build result container
 FROM php:8.1-fpm
 
-RUN apt-get update -y
+RUN apt-get update -y && \
+    apt-get upgrade -y --with-new-pkgs
 
 # PHP intl extension
 RUN apt-get install -y libicu-dev && \
-    docker-php-ext-install intl
+    docker-php-ext-install intl && \
+    docker-php-ext-configure intl
 
 # PHP PostgreSQL extension
 RUN apt-get install -y libpq-dev && \
