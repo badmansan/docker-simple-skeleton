@@ -1,23 +1,29 @@
-FROM php:8.1-cli
+FROM php:8.1-cli-alpine
 
-RUN apt-get update -y
+# system update need for production only
+# RUN apk update && apk upgrade --no-cache
+
+# unzip need by composer
+RUN apk add --no-cache unzip
 
 # PHP intl extension
-RUN apt-get install -y libicu-dev && \
+RUN apk add --no-cache icu-dev && \
     docker-php-ext-install intl && \
     docker-php-ext-configure intl
 
 # PHP PostgreSQL extension
-RUN apt-get install -y libpq-dev && \
+RUN apk --no-cache add postgresql-dev && \
     docker-php-ext-install pdo_pgsql
 
 # xdebug
-RUN pecl install xdebug && docker-php-ext-enable xdebug
+RUN apk --no-cache --virtual build-deps add \
+    autoconf g++ make && \
+    pecl install xdebug && \
+    docker-php-ext-enable xdebug && \
+    apk del -f build-deps
 
-# unzip need by composer
-RUN apt-get install unzip -y
-
-RUN apt-get autoremove -y
+# delete garbage
+RUN rm -rf /tmp/*
 
 # PHP_INI_DIR is set inside php image
 RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini

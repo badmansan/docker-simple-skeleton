@@ -1,0 +1,9 @@
+FROM nginx:1.19-alpine
+
+RUN apk update && apk upgrade --no-cache
+
+COPY ./docker/common/nginx/conf.d /etc/nginx/conf.d
+
+WORKDIR /app/public
+
+COPY ./app/public ./

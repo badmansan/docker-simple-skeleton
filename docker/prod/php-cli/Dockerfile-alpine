@@ -1,7 +1,7 @@
 # make /vendor folder by composer
-FROM php:8.1-cli AS vendor-builder
+FROM php:8.1-cli-alpine AS vendor-builder
 
-RUN apt-get update -y && apt-get install unzip -y
+RUN apk add --no-cache unzip
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
@@ -10,26 +10,24 @@ WORKDIR /app
 
 COPY ./app/composer.json ./app/composer.lock ./
 
-RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader
+RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader --ignore-platform-reqs
 
 # build result container
-FROM php:8.1-cli
+FROM php:8.1-cli-alpine
 
-RUN apt-get update -y
+RUN apk update && apk upgrade --no-cache
 
 # PHP intl extension
-RUN apt-get install -y libicu-dev && \
-    docker-php-ext-install intl \
+RUN apk add --no-cache icu-dev && \
+    docker-php-ext-install intl && \
     docker-php-ext-configure intl
 
 # PHP PostgreSQL extension
-RUN apt-get install -y libpq-dev && \
-    docker-php-ext-install pdo_pgsql pgsql
+RUN apk --no-cache add postgresql-dev && \
+    docker-php-ext-install pdo_pgsql
 
 # PHP opcache
 RUN docker-php-ext-install opcache
-
-RUN apt-get autoremove -y
 
 # PHP_INI_DIR is set inside php image
 RUN mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini

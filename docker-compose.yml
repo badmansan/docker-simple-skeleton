@@ -3,7 +3,7 @@ services:
     nginx:
         build:
             context: docker
-            dockerfile: dev/nginx/Dockerfile
+            dockerfile: dev/nginx/Dockerfile-alpine
         volumes:
             - ./app/public:/app/public
         depends_on:
@@ -11,14 +11,18 @@ services:
     php-fpm:
         build:
             context: docker
-            dockerfile: dev/php-fpm/Dockerfile
+            dockerfile: dev/php-fpm/Dockerfile-alpine
+        environment:
+            PHP_IDE_CONFIG: "serverName=Docker"
         volumes:
             - ./app:/app
             - ./docker/dev/php-fpm/xdebug-fpm.ini:/usr/local/etc/php/conf.d/xdebug-fpm.ini
     php-cli:
         build:
             context: docker
-            dockerfile: dev/php-cli/Dockerfile
+            dockerfile: dev/php-cli/Dockerfile-alpine
+        environment:
+            PHP_IDE_CONFIG: "serverName=Docker"
         volumes:
             - ./app:/app
             - ./docker/dev/php-cli/xdebug-cli.ini:/usr/local/etc/php/conf.d/xdebug-cli.ini
