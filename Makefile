@@ -1,7 +1,7 @@
 include .env
 export $(shell sed 's/=.*//' .env)
 
-GIT_BRANCH = $(shell git branch --no-color --show-current)
+GIT_BRANCH = $(shell git branch --no-color --show-current | sed 's/\//./g')
 GIT_TAG = $(shell git describe --tags)
 IMAGE_VERSION = ${GIT_BRANCH}-${GIT_TAG}
 
