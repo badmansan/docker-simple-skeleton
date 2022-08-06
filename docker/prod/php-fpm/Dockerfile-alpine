@@ -1,0 +1,41 @@
+# make /vendor folder by composer
+FROM php:8.1-cli-alpine AS vendor-builder
+
+RUN apk add --no-cache unzip
+
+ENV COMPOSER_ALLOW_SUPERUSER 1
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
+
+WORKDIR /app
+
+COPY ./app/composer.json ./app/composer.lock ./
+
+RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader
+
+# build result container
+FROM php:8.1-fpm-alpine
+
+RUN apk update && apk upgrade --no-cache
+
+# PHP intl extension
+RUN apk add --no-cache icu-dev && \
+    docker-php-ext-install intl && \
+    docker-php-ext-configure intl
+
+# PHP PostgreSQL extension
+RUN apk --no-cache add postgresql-dev && \
+    docker-php-ext-install pdo_pgsql
+
+# PHP opcache
+RUN docker-php-ext-install opcache
+
+# PHP_INI_DIR is set inside php image
+RUN mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
+
+COPY ./docker/common/php/conf.d $PHP_INI_DIR/conf.d
+COPY ./docker/prod/php/conf.d $PHP_INI_DIR/conf.d
+
+WORKDIR /app
+
+COPY --from=vendor-builder ./app ./
+COPY ./app ./
