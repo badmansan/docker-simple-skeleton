@@ -23,8 +23,7 @@ RUN apk --no-cache --virtual build-deps add \
     apk del -f build-deps
 
 # delete garbage
-RUN apk del gcc g++ && \
-    rm -rf /tmp/pear
+RUN rm -rf /tmp/*
 
 # PHP_INI_DIR is set inside php image
 RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
