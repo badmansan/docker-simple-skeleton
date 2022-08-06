@@ -10,7 +10,7 @@ WORKDIR /app
 
 COPY ./app/composer.json ./app/composer.lock ./
 
-RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader
+RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader --ignore-platform-reqs
 
 # build result container
 FROM php:8.1-fpm-alpine

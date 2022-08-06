@@ -43,9 +43,9 @@ production-build:
 
 production-build-alpine:
 	docker build --no-cache --pull --file=docker/prod/nginx/Dockerfile-alpine --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:nginx-${IMAGE_VERSION} ./
-#	docker build --no-cache --pull --file=docker/prod/postgres/Dockerfile-alpine --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:postgres-${IMAGE_VERSION} ./
-#	docker build --no-cache --pull --file=docker/prod/php-cli/Dockerfile-alpine --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-cli-${IMAGE_VERSION} ./
-#	docker build --no-cache --pull --file=docker/prod/php-fpm/Dockerfile-alpine --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-fpm-${IMAGE_VERSION} ./
+	docker build --no-cache --pull --file=docker/prod/postgres/Dockerfile-alpine --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:postgres-${IMAGE_VERSION} ./
+	docker build --no-cache --pull --file=docker/prod/php-cli/Dockerfile-alpine --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-cli-${IMAGE_VERSION} ./
+	docker build --no-cache --pull --file=docker/prod/php-fpm/Dockerfile-alpine --tag=${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-fpm-${IMAGE_VERSION} ./
 
 production-registry-push:
 	docker push ${REGISTRY}/${COMPOSE_PROJECT_NAME}:php-cli-${IMAGE_VERSION}
